@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MPG Prediction Using ShinyApp</title>
+  <meta charset="utf-8">
+  <meta name="description" content="MPG Prediction Using ShinyApp">
+  <meta name="author" content="Serkan Serttop">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>MPG Prediction Using ShinyApp</h1>
+    <h2>Developing Data Products Project</h2>
+    <p>Serkan Serttop<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Target Audience</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Many drivers are interested in the mpg eficiency of their car. 
+Drivers are mainly concerned about:</p>
+
+<ol>
+<li><p>The environment.</p></li>
+<li><p>The economic impact in a period of rising fuel costs.</p></li>
+</ol>
+
+<p>Our app allows drivers to:</p>
+
+<ol>
+<li><p>Tweak the parameters they are interested in.</p></li>
+<li><p>Balance features according to their concerns.</p></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Dataset</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The &quot;Motor Trend Car Road Tests&quot; dataset was taken from 1974 Motor Trend US Magazine.
+The dataset contains information on 32 cars on the following 11 variables. </p>
+
+<ol>
+<li>mpg   Miles/(US) gallon</li>
+<li>cyl   Number of cylinders</li>
+<li>disp  Displacement (cu.in.)</li>
+<li>hp    Gross horsepower</li>
+<li>drat  Rear axle ratio</li>
+<li>wt    Weight (lb/1000)</li>
+<li>qsec  1/4 mile time</li>
+<li>vs    V/S</li>
+<li>am    Transmission (0 = automatic, 1 = manual)</li>
+<li>gear     Number of forward gears</li>
+<li>carb     Number of carburetors</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Predictive Model</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><strong>Step</strong> function of <strong>R</strong> found &quot;wt + cyl + hp + am&quot; variables to give the best fit when &#39;am&#39;, &#39;carb&#39;, &#39;cyl&#39;, &#39;gear&#39;, &#39;vs&#39; variables were factorized. Further manual examination revealed that adding the interaction term wt:am improved the adjusted R-squared. That mix was chosen as the final model.</p>
+
+<pre><code class="r">model &lt;- lm( mpg ~ wt + cyl + hp + am + wt:am, data = mtcars )
+summary(model)$coefficients
+</code></pre>
+
+<pre><code>##             Estimate Std. Error t value  Pr(&gt;|t|)
+## (Intercept) 33.22945    3.01690 11.0144 2.732e-11
+## wt          -2.19536    0.84638 -2.5938 1.539e-02
+## cyl         -0.83651    0.52826 -1.5835 1.254e-01
+## hp          -0.01246    0.01322 -0.9426 3.545e-01
+## am          11.26038    3.91986  2.8726 7.999e-03
+## wt:am       -3.72353    1.40714 -2.6462 1.364e-02
+</code></pre>
+
+<p>One detail merits pointing out, cars with manual tranmission have better mpg up to about 3.024 thousand pounds, after which cars with automatic transmission become more efficient.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Shiny App</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Our shiny app offers users to tweak the following parameters:</p>
+
+<ol>
+<li><p>Weight</p></li>
+<li><p>Cylinders</p></li>
+<li><p>Horse Power</p></li>
+<li><p>Type of Transmission</p></li>
+</ol>
+
+<p>When any parameter is changed, our app immediately returns the result with a sentence like below:</p>
+
+<p>&quot;A car with manual transmission, weighing 1995 pounds, that has 4 cylinders and 140 horse power is predicted to have 27.38 mpg&quot;</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Target Audience'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Dataset'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Predictive Model'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Shiny App'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
